@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Dad! 🎉</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: #fff5f9;
+    background-image:
+      radial-gradient(circle at 10% 20%, #ffe0f0 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, #e0f0ff 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, #fff9e0 0%, transparent 60%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Static decorative dots in background */
+  body::before {
+    content: '🎈 🌟 🎊 ✨ 🎉 💛 🎈 🌟 🎊 ✨ 🎉 💛 🎈 🌟 🎊 ✨ 🎉 💛 🎈 🌟';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    font-size: 28px;
+    line-height: 2.4;
+    letter-spacing: 18px;
+    opacity: 0.09;
+    pointer-events: none;
+    word-wrap: break-word;
+    padding: 12px;
+    z-index: 0;
+  }
+
+  /* ---- CONFETTI ---- */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: cfall linear forwards;
+  }
+  @keyframes cfall {
+    0%   { transform: translateY(0) rotate(0deg) scaleX(1);   opacity: 1; }
+    80%  { opacity: 1; }
+    100% { transform: translateY(700px) rotate(900deg) scaleX(-1); opacity: 0; }
+  }
+
+  /* ---- SCREENS ---- */
+  .screen {
+    display: none;
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 400px;
+    animation: popin 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+    flex-direction: column;
+    align-items: center;
+  }
+  .screen.active { display: flex; }
+  @keyframes popin {
+    from { transform: scale(0.7) translateY(20px); opacity: 0; }
+    to   { transform: scale(1) translateY(0);      opacity: 1; }
+  }
+
+  /* ---- CARD ---- */
+  .card {
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 36px 32px 32px;
+    width: 100%;
+    box-shadow:
+      0 2px 0 #ffd93d,
+      0 4px 0 #ff6b9d,
+      0 6px 0 #4d96ff,
+      0 24px 60px rgba(0,0,0,0.12);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255,107,157,0.15);
+  }
+
+  /* Rainbow top stripe */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 7px;
+    background: linear-gradient(90deg, #ff6b9d, #ffd93d, #6bcb77, #4d96ff, #c44dff, #ff6b9d);
+    background-size: 200%;
+    border-radius: 28px 28px 0 0;
+  }
+
+  /* Corner decorations */
+  .corner {
+    position: absolute;
+    font-size: 28px;
+    opacity: 0.5;
+    pointer-events: none;
+    line-height: 1;
+  }
+  .corner.tl { top: 14px; left: 14px; transform: rotate(-15deg); }
+  .corner.tr { top: 14px; right: 14px; transform: rotate(15deg); }
+  .corner.bl { bottom: 14px; left: 14px; transform: rotate(15deg); }
+  .corner.br { bottom: 14px; right: 14px; transform: rotate(-15deg); }
+
+  /* ---- EMOJI ---- */
+  .big-emoji {
+    font-size: 68px;
+    display: block;
+    margin: 8px 0 16px;
+    animation: wiggle 2s ease-in-out infinite;
+  }
+  @keyframes wiggle {
+    0%,100% { transform: rotate(-6deg) scale(1); }
+    25%      { transform: rotate(6deg) scale(1.08); }
+    50%      { transform: rotate(-4deg) scale(1); }
+    75%      { transform: rotate(4deg) scale(1.05); }
+  }
+
+  /* ---- TYPOGRAPHY ---- */
+  .title {
+    font-size: 32px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff6b9d 0%, #ff9f43 50%, #ffd93d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .sub {
+    font-size: 12px;
+    color: #bbb;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .message {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.8;
+    margin-bottom: 28px;
+    font-family: Georgia, serif;
+  }
+  .message strong { color: #ff6b9d; font-style: italic; }
+
+  /* ---- BUTTON ---- */
+  .btn {
+    display: inline-block;
+    padding: 15px 36px;
+    border-radius: 50px;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn:hover { transform: translateY(-2px) scale(1.04); }
+  .btn:active { transform: scale(0.97) translateY(0); }
+
+  .btn-pink   { background: linear-gradient(135deg, #ff6b9d, #ff4081); color: #fff; box-shadow: 0 6px 20px rgba(255,64,129,0.35); }
+  .btn-yellow { background: linear-gradient(135deg, #ffd93d, #ffb300); color: #5a3e00; box-shadow: 0 6px 20px rgba(255,179,0,0.35); }
+  .btn-blue   { background: linear-gradient(135deg, #4d96ff, #1565c0); color: #fff; box-shadow: 0 6px 20px rgba(77,150,255,0.35); }
+  .btn-green  { background: linear-gradient(135deg, #6bcb77, #2e7d32); color: #fff; box-shadow: 0 6px 20px rgba(107,203,119,0.35); }
+  .btn-party  { background: linear-gradient(135deg, #ff6b9d, #ffd93d, #4d96ff); color: #fff; box-shadow: 0 6px 24px rgba(255,107,157,0.4); }
+
+  /* ---- PROGRESS DOTS ---- */
+  .dots {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+    justify-content: center;
+  }
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.12);
+    transition: background 0.3s, transform 0.3s;
+  }
+  .dot.done { background: #ff6b9d; transform: scale(1.3); }
+
+  /* ---- FINAL SCREEN ---- */
+  #burst {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9990;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: linear-gradient(135deg, #fff0f7 0%, #fff9e0 50%, #f0f7ff 100%);
+    animation: fadeIn 0.5s;
+    padding: 32px;
+    text-align: center;
+  }
+  #burst.show { display: flex; }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+  .burst-emojis {
+    font-size: 52px;
+    margin-bottom: 16px;
+    animation: wiggle 1.5s ease-in-out infinite;
+  }
+  .burst-title {
+    font-size: 42px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff6b9d, #ffd93d, #4d96ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .burst-sub {
+    font-size: 17px;
+    color: #555;
+    max-width: 300px;
+    line-height: 1.75;
+    font-family: Georgia, serif;
+    margin-bottom: 12px;
+  }
+  .burst-sub strong { color: #ff6b9d; }
+  .signature {
+    margin-top: 8px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 20px;
+    color: #ff9f43;
+  }
+  .close-burst {
+    margin-top: 28px;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #ff6b9d, #ff9f43);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255,107,157,0.35);
+    transition: transform 0.15s;
+  }
+  .close-burst:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+
+<!-- SCREEN 0: Knock knock -->
+<div class="screen active" id="s0">
+  <div class="card">
+    <span class="corner tl">🎈</span>
+    <span class="corner tr">🎉</span>
+    <span class="corner bl">🌟</span>
+    <span class="corner br">🎊</span>
+    <span class="big-emoji">🎁</span>
+    <div class="title">Psst, Dad!</div>
+    <div class="sub">You've got a special delivery</div>
+    <div class="message">
+      Someone left a birthday card here for the <strong>world's greatest dad.</strong><br><br>
+      Tap below to unwrap it! 🎉
+    </div>
+    <button class="btn btn-pink" onclick="go(event, 1)">Open your card! 🎊</button>
+  </div>
+  <div class="dots">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+</div>
+
+<!-- SCREEN 1: Happy Birthday -->
+<div class="screen" id="s1">
+  <div class="card">
+    <span class="corner tl">🎂</span>
+    <span class="corner tr">🎈</span>
+    <span class="corner bl">✨</span>
+    <span class="corner br">🎉</span>
+    <span class="big-emoji">🎂</span>
+    <div class="title">Happy Birthday,<br>Dad! 🎉</div>
+    <div class="sub">June 28th is YOUR day</div>
+    <div class="message">
+      Today the whole world gets to celebrate <strong>you!</strong><br><br>
+      Wishing you a day full of joy, laughter, great food, and all the things that make you smile. You deserve every single bit of it. 🥂🎈
+    </div>
+    <button class="btn btn-yellow" onclick="go(event, 2)">Keep going ✨</button>
+  </div>
+  <div class="dots">
+    <div class="dot done"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+</div>
+
+<!-- SCREEN 2: Grateful -->
+<div class="screen" id="s2">
+  <div class="card">
+    <span class="corner tl">💛</span>
+    <span class="corner tr">🌟</span>
+    <span class="corner bl">💫</span>
+    <span class="corner br">💛</span>
+    <span class="big-emoji">💛</span>
+    <div class="title">I'm so grateful<br>for you</div>
+    <div class="sub">From the bottom of my heart</div>
+    <div class="message">
+      Having you as my dad is one of the <strong>greatest gifts</strong> of my life.<br><br>
+      You make me feel loved, capable, and brave — and I carry that with me every single day. I'm so lucky to be your kid. 🌟
+    </div>
+    <button class="btn btn-blue" onclick="go(event, 3)">There's more! 💙</button>
+  </div>
+  <div class="dots">
+    <div class="dot done"></div>
+    <div class="dot done"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+</div>
+
+<!-- SCREEN 3: Thank you -->
+<div class="screen" id="s3">
+  <div class="card">
+    <span class="corner tl">🙏</span>
+    <span class="corner tr">❤️</span>
+    <span class="corner bl">💪</span>
+    <span class="corner br">🌈</span>
+    <span class="big-emoji">🙏</span>
+    <div class="title">Thank you<br>for everything</div>
+    <div class="sub">No words are enough</div>
+    <div class="message">
+      All the support, the encouragement, the times you believed in me when I struggled to believe in myself — <strong>that means everything.</strong><br><br>
+      You have shaped who I am and I couldn't be more thankful. 💪❤️
+    </div>
+    <button class="btn btn-green" onclick="go(event, 4)">One more thing! 🏔️</button>
+  </div>
+  <div class="dots">
+    <div class="dot done"></div>
+    <div class="dot done"></div>
+    <div class="dot done"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+</div>
+
+<!-- SCREEN 4: Hiking -->
+<div class="screen" id="s4">
+  <div class="card">
+    <span class="corner tl">🏔️</span>
+    <span class="corner tr">🌄</span>
+    <span class="corner bl">🥾</span>
+    <span class="corner br">🌲</span>
+    <span class="big-emoji">🏔️</span>
+    <div class="title">Adventure<br>awaits us!</div>
+    <div class="sub">Get those boots ready 🥾</div>
+    <div class="message">
+      I am <strong>so excited</strong> to go hiking with you! Fresh mountain air, incredible views, and the best company in the world — that's the perfect birthday celebration.<br><br>
+      Let's make some unforgettable memories together! 🌄🌲
+    </div>
+    <button class="btn btn-party" onclick="finalBurst(event)">🎉 Let's celebrate!</button>
+  </div>
+  <div class="dots">
+    <div class="dot done"></div>
+    <div class="dot done"></div>
+    <div class="dot done"></div>
+    <div class="dot done"></div>
+    <div class="dot"></div>
+  </div>
+</div>
+
+<!-- FINAL BURST -->
+<div id="burst">
+  <div class="burst-emojis">🎉🎂🎈</div>
+  <div class="burst-title">Happy Birthday<br>Dad! 🎊</div>
+  <div class="burst-sub">
+    I love you so much. Thank you for being the most amazing dad. Here's to you, to our hiking trip, and to many more beautiful years together! <strong>💛</strong>
+  </div>
+  <div class="signature">— your sweetheart 🌸</div>
+  <button class="close-burst" onclick="closeBurst()">Replay the card 🔄</button>
+</div>
+
+<script>
+  const confColors = ['#ff6b9d','#ffd93d','#4d96ff','#6bcb77','#ff9f43','#c44dff','#ff4757','#fff'];
+
+  function burst(x, y, count) {
+    for (let i = 0; i < count; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti-piece';
+      const size = 7 + Math.random() * 9;
+      const shape = Math.random() > 0.4 ? (Math.random() > 0.5 ? '50%' : '2px') : '0';
+      c.style.cssText = `
+        background:${confColors[Math.floor(Math.random()*confColors.length)]};
+        width:${size}px; height:${size}px;
+        border-radius:${shape};
+        left:${x + (Math.random()-0.5)*180}px;
+        top:${y}px;
+        animation-duration:${1.3+Math.random()*1}s;
+        animation-delay:${Math.random()*0.25}s;
+      `;
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 2800);
+    }
+  }
+
+  let current = 0;
+
+  function go(e, n) {
+    const r = e.currentTarget.getBoundingClientRect();
+    burst(r.left + r.width/2, r.top + r.height/2, 50);
+    document.getElementById('s'+current).classList.remove('active');
+    setTimeout(() => {
+      document.getElementById('s'+n).classList.add('active');
+      current = n;
+      burst(window.innerWidth/2, window.innerHeight/2, 30);
+    }, 80);
+  }
+
+  function finalBurst(e) {
+    const r = e.currentTarget.getBoundingClientRect();
+    burst(r.left + r.width/2, r.top, 80);
+    setTimeout(() => {
+      document.getElementById('burst').classList.add('show');
+      for (let i = 0; i < 8; i++) {
+        setTimeout(() => burst(Math.random()*window.innerWidth, 40, 45), i*180);
+      }
+    }, 350);
+  }
+
+  function closeBurst() {
+    document.getElementById('burst').classList.remove('show');
+    document.getElementById('s'+current).classList.remove('active');
+    current = 0;
+    document.getElementById('s0').classList.add('active');
+  }
+</script>
+</body>
+</html>
